@@ -25,6 +25,7 @@ module Simplificator
       # * delay: wait until the snapshot is taken
       # * notify: callback url which is called after snapshot is taken
       # * excerpt: taking an excerpt snapshot. A hash with for entries. width, height, x, y
+      # * renderer: optionally specify another renderer (ex: 5)
       # * videothumb: experimental option, check Joshs blog (http://blog.joshuaeichorn.com/archives/2008/07/08/videothumb-addon-to-webthumb-is-alpha/)
       #   (true or false)
       # Only the url option is required. Check webthumb API for default values. Check also the different constants 
@@ -76,11 +77,13 @@ module Simplificator
           request.add_element('customThumbnail', 
             'width' => options[:custom_thumbnail][:width].to_s, 
             'height' => options[:custom_thumbnail][:height].to_s)
-				
         end
         if options.has_key?(:excerpt)
           excerpt = request.add_element('excerpt')
           [:x, :y, :width, :height].each {|item| add_element(excerpt, options[:excerpt], item)}
+        end
+        if options.has_key?(:renderer)
+          request.add_element('renderer').add_text(options[:renderer].to_s)
         end
         root
       end

@@ -27,6 +27,17 @@ class WebthumbTest < Test::Unit::TestCase
     
     
   end
+  
+  def test_build_fetch_with_renderer()
+    xml = Webthumb.new('1234').send(:build_thumbnail_xml, 
+      :url => 'http://simplificator.com', 
+      :width => 1024, :height => 2048, 
+      :renderer => 5)
+    assert_equal('http://simplificator.com', REXML::XPath.first(xml, 'request/url').text)
+    assert_equal('1024', REXML::XPath.first(xml, 'request/width').text)
+    assert_equal('2048', REXML::XPath.first(xml, 'request/height').text)
+    assert_equal('5', REXML::XPath.first(xml, 'request/renderer').text)
+  end
 
   def test_build_job_status_xml()
     xml = Webthumb.new('1234').send(:build_job_status_xml, 'abcd')
